@@ -6,34 +6,117 @@
   },
   "logging": {
     "enabled": true,
-    "logFile": "~/.claude/heartbeat-v2.log",
+    "logFile": "~/.claude/logs/heartbeat-v2.log",
     "level": "info"
   },
   "modules": {
+    "ai-summarizer": {
+      "enabled": true,
+      "model": "claude-3-5-sonnet-20241022",
+      "baseUrl": "https://api.anthropic.com",
+      "claudeApiKey": "YOUR_CLAUDE_API_KEY_HERE",
+      "description": "AI智能摘要模块，分析会话内容和错误优先级"
+    },
     "activity-monitor": {
       "enabled": true,
       "interval": 1800000,
-      "description": "监控Claude Code活动状态，每30分钟发送心跳"
+      "idleThreshold": 300000,
+      "notifyOnIdle": true,
+      "notifyOnActive": true,
+      "description": "监控Claude Code活动状态"
     },
     "error-alert": {
       "enabled": true,
-      "interval": 300000,
-      "description": "监控错误日志并告警，每5分钟检查一次"
+      "watchFiles": [
+        "~/.claude/logs/claude-code.log",
+        "~/.claude/logs/heartbeat-v2.log"
+      ],
+      "errorPatterns": [
+        "ERROR",
+        "FATAL",
+        "Exception",
+        "failed",
+        "timeout"
+      ],
+      "checkInterval": 60000,
+      "maxAlertsPerHour": 10,
+      "description": "监控错误日志并告警"
     },
     "session-tracker": {
       "enabled": true,
-      "interval": 600000,
-      "description": "追踪会话信息和使用情况，每10分钟记录一次"
+      "notifyOnStart": true,
+      "notifyOnEnd": true,
+      "summaryInterval": 3600000,
+      "description": "追踪会话信息和使用情况"
     },
     "remote-control": {
-      "enabled": false,
-      "interval": 60000,
-      "description": "远程控制接口（实验性功能），每1分钟检查命令"
+      "enabled": true,
+      "pollInterval": 30000,
+      "commands": {
+        "/status": "显示系统状态",
+        "/stats": "显示工作统计",
+        "/modules": "显示模块状态",
+        "/restart": "重启心跳系统",
+        "/help": "显示帮助信息"
+      },
+      "description": "远程控制接口"
     },
     "work-stats": {
       "enabled": true,
-      "interval": 3600000,
-      "description": "工作统计和报告，每1小时生成统计"
+      "reportInterval": 3600000,
+      "dailyReportTime": "18:00",
+      "trackMetrics": {
+        "sessions": true,
+        "activeTime": true,
+        "idleTime": true,
+        "errors": true
+      },
+      "description": "工作统计和报告"
+    },
+    "web-dashboard": {
+      "enabled": true,
+      "port": 3000,
+      "description": "Web监控面板，提供实时状态展示和远程控制"
+    },
+    "process-controller": {
+      "enabled": true,
+      "processName": "claude.exe",
+      "description": "进程控制模块，支持暂停/恢复/重启Claude进程"
+    },
+    "keyboard-controller": {
+      "enabled": true,
+      "description": "键盘模拟控制模块，支持远程发送键盘指令"
+    },
+    "notification-router": {
+      "enabled": true,
+      "channels": ["telegram"],
+      "rules": [
+        {
+          "name": "error-alerts",
+          "condition": {
+            "type": "error"
+          },
+          "channels": ["telegram", "email"]
+        },
+        {
+          "name": "critical-alerts",
+          "condition": {
+            "keywords": ["CRITICAL", "FATAL"]
+          },
+          "channels": ["telegram", "slack", "email"]
+        }
+      ],
+      "description": "多渠道通知路由系统，支持Telegram/Discord/Slack/Email"
+    },
+    "system-monitor": {
+      "enabled": true,
+      "interval": 60000,
+      "thresholds": {
+        "cpu": 90,
+        "memory": 85,
+        "disk": 90
+      },
+      "description": "系统资源监控模块，监控CPU/内存/磁盘/网络/进程"
     }
   }
 }

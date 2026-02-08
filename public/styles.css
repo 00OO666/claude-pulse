@@ -1,0 +1,189 @@
+/* 自定义样式 */
+
+/* 暗色模式变量 */
+:root {
+  --primary-color: #3b82f6;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+}
+
+/* 卡片样式 */
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-colors duration-200;
+}
+
+.card-title {
+  @apply text-lg font-semibold text-gray-900 dark:text-white mb-4;
+}
+
+/* 状态卡片 */
+.stat-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 flex items-center space-x-4 transition-all duration-200 hover:shadow-xl;
+}
+
+.stat-icon {
+  @apply w-16 h-16 rounded-full flex items-center justify-center;
+}
+
+.stat-content {
+  @apply flex-1;
+}
+
+.stat-value {
+  @apply text-3xl font-bold text-gray-900 dark:text-white;
+}
+
+.stat-label {
+  @apply text-sm text-gray-600 dark:text-gray-400 mt-1;
+}
+
+/* 会话项 */
+.session-item {
+  @apply bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-all duration-200 hover:shadow-md cursor-pointer;
+}
+
+.session-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.session-topic {
+  @apply font-semibold text-gray-900 dark:text-white flex items-center space-x-2;
+}
+
+.session-status {
+  @apply text-xs px-2 py-1 rounded-full;
+}
+
+.session-status.active {
+  @apply bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200;
+}
+
+.session-meta {
+  @apply text-sm text-gray-600 dark:text-gray-400 flex items-center space-x-4;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center space-x-2;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200;
+}
+
+/* 模态框 */
+.modal {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-200;
+}
+
+.modal.hidden {
+  @apply opacity-0 pointer-events-none;
+}
+
+.modal-content {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto;
+}
+
+/* 连接状态 */
+.status-connected {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.status-disconnected {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.status-connecting {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+/* 日志样式 */
+#logs {
+  @apply bg-gray-50 dark:bg-gray-900 rounded p-3;
+}
+
+#logs .log-line {
+  @apply py-1 border-b border-gray-200 dark:border-gray-700;
+}
+
+#logs .log-line:last-child {
+  @apply border-b-0;
+}
+
+#logs .log-info {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+#logs .log-warn {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+#logs .log-error {
+  @apply text-red-600 dark:text-red-400;
+}
+
+/* 图表容器 */
+canvas {
+  @apply max-h-64;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .stat-card {
+    @apply flex-col text-center;
+  }
+
+  .stat-icon {
+    @apply mb-2;
+  }
+
+  .session-header {
+    @apply flex-col items-start space-y-2;
+  }
+
+  .session-meta {
+    @apply flex-col items-start space-y-1 space-x-0;
+  }
+}
+
+/* 动画 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* 加载动画 */
+.loading {
+  @apply inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin;
+}

@@ -1,0 +1,85 @@
+{
+  "telegram": {
+    "enabled": true,
+    "botToken": "YOUR_BOT_TOKEN",
+    "chatId": "YOUR_CHAT_ID",
+    "parseMode": "HTML",
+    "rateLimit": {
+      "max": 30,
+      "window": 60000
+    }
+  },
+  "discord": {
+    "enabled": false,
+    "webhookUrl": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL",
+    "username": "Claude Pulse",
+    "avatarUrl": null,
+    "rateLimit": {
+      "max": 50,
+      "window": 60000
+    }
+  },
+  "slack": {
+    "enabled": false,
+    "webhookUrl": "https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+    "botToken": null,
+    "channel": "#general",
+    "username": "Claude Pulse",
+    "iconEmoji": ":robot_face:",
+    "rateLimit": {
+      "max": 60,
+      "window": 60000
+    }
+  },
+  "email": {
+    "enabled": false,
+    "from": "noreply@example.com",
+    "to": "your-email@example.com",
+    "subject": "Claude Pulse Notification",
+    "smtp": {
+      "provider": "sendgrid",
+      "apiKey": "YOUR_API_KEY",
+      "apiUrl": "https://api.sendgrid.com/v3/mail/send"
+    },
+    "rateLimit": {
+      "max": 10,
+      "window": 60000
+    }
+  },
+  "defaultChannels": ["telegram"],
+  "globalRateLimit": {
+    "max": 100,
+    "window": 60000
+  },
+  "notificationRules": [
+    {
+      "type": "error",
+      "channels": ["telegram", "email"],
+      "priority": "high",
+      "description": "错误告警发送到 Telegram 和 Email"
+    },
+    {
+      "type": "warning",
+      "channels": ["telegram"],
+      "priority": "medium",
+      "description": "警告只发送到 Telegram"
+    },
+    {
+      "type": "info",
+      "channels": ["telegram"],
+      "priority": "low",
+      "description": "普通信息发送到 Telegram"
+    },
+    {
+      "keywords": ["critical", "urgent", "emergency"],
+      "channels": ["telegram", "discord", "slack", "email"],
+      "priority": "critical",
+      "description": "包含关键词的消息发送到所有渠道"
+    },
+    {
+      "modules": ["error-alert", "session-tracker"],
+      "channels": ["telegram"],
+      "description": "特定模块的通知发送到 Telegram"
+    }
+  ]
+}
