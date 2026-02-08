@@ -1,0 +1,39 @@
+{
+  "telegram": {
+    "botToken": "YOUR_BOT_TOKEN_HERE",
+    "chatId": "YOUR_CHAT_ID_HERE",
+    "parseMode": "HTML"
+  },
+  "logging": {
+    "enabled": true,
+    "logFile": "~/.claude/heartbeat-v2.log",
+    "level": "info"
+  },
+  "modules": {
+    "activity-monitor": {
+      "enabled": true,
+      "interval": 1800000,
+      "description": "监控Claude Code活动状态，每30分钟发送心跳"
+    },
+    "error-alert": {
+      "enabled": true,
+      "interval": 300000,
+      "description": "监控错误日志并告警，每5分钟检查一次"
+    },
+    "session-tracker": {
+      "enabled": true,
+      "interval": 600000,
+      "description": "追踪会话信息和使用情况，每10分钟记录一次"
+    },
+    "remote-control": {
+      "enabled": false,
+      "interval": 60000,
+      "description": "远程控制接口（实验性功能），每1分钟检查命令"
+    },
+    "work-stats": {
+      "enabled": true,
+      "interval": 3600000,
+      "description": "工作统计和报告，每1小时生成统计"
+    }
+  }
+}
