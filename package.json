@@ -1,6 +1,6 @@
 {
   "name": "claude-pulse",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Real-time monitoring system for Claude Code CLI with AI-powered insights",
   "main": "index.js",
   "scripts": {

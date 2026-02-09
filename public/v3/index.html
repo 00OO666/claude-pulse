@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Advanced monitoring dashboard for Claude Code sessions">
+  <meta name="theme-color" content="#3b82f6">
+  <title>ClaudePulse Dashboard V3</title>
+  <link rel="manifest" href="/v3/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/v3/icon-192.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/gridstack@9.4.0/dist/gridstack.min.css">
+  <script src="https://unpkg.com/gridstack@9.4.0/dist/gridstack-all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+  <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <span class="text-3xl">🫀</span>
+          <h1 class="ml-3 text-xl font-bold text-gray-900 dark:text-white">ClaudePulse Dashboard V3</h1>
+          <span class="ml-3 px-2 py-1 text-xs font-semibold bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">Enhanced</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <span id="connection-status" class="text-sm text-gray-500 dark:text-gray-400">连接中...</span>
+          <button id="search-btn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="搜索"><span class="text-xl">🔍</span></button>
+          <button id="export-btn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="导出"><span class="text-xl">📥</span></button>
+          <button id="layout-btn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="布局"><span class="text-xl">⚙️</span></button>
+          <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="主题"><span class="text-2xl">🌙</span></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid-stack" id="dashboard-grid"></div>
+  </main>
+  <div id="notification-container" class="fixed top-20 right-4 z-50 space-y-2"></div>
+  <script src="app.js"></script>
+</body>
+</html>

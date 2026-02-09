@@ -1,0 +1,103 @@
+{
+  "modules": {
+    "remote-control": {
+      "enabled": true,
+      "interval": 5000,
+      "description": "远程控制模块 - 通过Telegram Bot远程控制Claude Pulse",
+
+      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+
+      "allowedChatIds": [
+        "6145538033"
+      ],
+
+      "userPermissions": {
+        "6145538033": "admin"
+      },
+
+      "_comments": {
+        "botToken": "从 @BotFather 获取的Telegram Bot Token",
+        "allowedChatIds": "允许访问的Chat ID列表（字符串数组）",
+        "userPermissions": "用户权限配置 - admin: 所有权限, user: 基本权限, viewer: 只读权限",
+        "interval": "轮询间隔（毫秒），建议5000-10000"
+      },
+
+      "_examples": {
+        "multiUser": {
+          "allowedChatIds": ["6145538033", "123456789", "987654321"],
+          "userPermissions": {
+            "6145538033": "admin",
+            "123456789": "user",
+            "987654321": "viewer"
+          }
+        },
+        "singleAdmin": {
+          "allowedChatIds": ["6145538033"],
+          "userPermissions": {
+            "6145538033": "admin"
+          }
+        }
+      },
+
+      "_features": {
+        "inlineKeyboard": "内联键盘 - 交互式按钮菜单",
+        "naturalLanguage": "自然语言理解 - 支持中文命令",
+        "voiceCommand": "语音命令 - 支持语音消息（需要API）",
+        "commandHistory": "命令历史 - 自动记录最近50条命令",
+        "smartSuggestions": "智能建议 - 基于系统状态的建议",
+        "multiUser": "多用户支持 - 不同权限级别"
+      },
+
+      "_permissions": {
+        "admin": {
+          "description": "管理员 - 所有权限",
+          "commands": ["*"]
+        },
+        "user": {
+          "description": "普通用户 - 基本操作权限",
+          "commands": [
+            "/status",
+            "/sessions",
+            "/logs",
+            "/stats",
+            "/help",
+            "/menu",
+            "/session",
+            "/repeat"
+          ]
+        },
+        "viewer": {
+          "description": "访客 - 只读权限",
+          "commands": [
+            "/status",
+            "/help",
+            "/menu"
+          ]
+        }
+      },
+
+      "_commands": {
+        "/menu": "打开主菜单（推荐）",
+        "/status": "查看系统状态",
+        "/sessions": "查看活跃会话列表",
+        "/logs [类型] [行数]": "查看日志（类型: all/error/warn）",
+        "/stats": "查看工作统计",
+        "/help": "显示帮助信息",
+        "/repeat": "重复上一条命令",
+        "/session <名称>": "查看会话详情"
+      },
+
+      "_naturalLanguage": {
+        "examples": [
+          "查看状态 -> /status",
+          "看看会话 -> /sessions",
+          "显示日志 -> /logs",
+          "有什么错误吗 -> /logs error",
+          "查看警告 -> /logs warn",
+          "帮助 -> /help",
+          "打开菜单 -> /menu"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClaudePulse - 操作序列编辑器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 16px;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 300px 1fr 350px;
+      gap: 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    .sidebar {
+      background: #f8f9fa;
+      padding: 20px;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    .sidebar h3 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .action-palette {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action-item {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      cursor: move;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-item:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .canvas {
+      padding: 30px;
+      background: #fafafa;
+      position: relative;
+    }
+
+    .canvas h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .sequence-container {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 400px;
+      border: 2px dashed #ddd;
+    }
+
+    .sequence-item {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: move;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .sequence-item:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    .sequence-item.dragging {
+      opacity: 0.5;
+    }
+
+    .sequence-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .sequence-title {
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sequence-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .sequence-params {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .param-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .param-label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .param-input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .properties-panel {
+      background: #f8f9fa;
+      padding: 20px;
+      border-left: 1px solid #e0e0e0;
+      overflow-y: auto;
+    }
+
+    .properties-panel h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .property-group {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .property-group h4 {
+      margin-bottom: 10px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .status-bar {
+      background: #f8f9fa;
+      padding: 15px 30px;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-info {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+      color: #333;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .empty-state-text {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state-hint {
+      font-size: 14px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 ClaudePulse 操作序列编辑器</h1>
+      <p>拖拽式设计自动化操作流程</p>
+    </div>
+
+    <div class="main-content">
+      <!-- 左侧：操作面板 -->
+      <div class="sidebar">
+        <h3>📦 操作组件</h3>
+        <div class="action-palette">
+          <div class="action-item" draggable="true" data-type="click">
+            <div class="action-icon" style="background: #e3f2fd; color: #1976d2;">🖱️</div>
+            <div>
+              <div style="font-weight: 600;">点击</div>
+              <div style="font-size: 12px; color: #666;">Click</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="type">
+            <div class="action-icon" style="background: #f3e5f5; color: #7b1fa2;">⌨️</div>
+            <div>
+              <div style="font-weight: 600;">输入文字</div>
+              <div style="font-size: 12px; color: #666;">Type Text</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="key">
+            <div class="action-icon" style="background: #fff3e0; color: #f57c00;">🔑</div>
+            <div>
+              <div style="font-weight: 600;">按键</div>
+              <div style="font-size: 12px; color: #666;">Press Key</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="wait">
+            <div class="action-icon" style="background: #e8f5e9; color: #388e3c;">⏱️</div>
+            <div>
+              <div style="font-weight: 600;">等待</div>
+              <div style="font-size: 12px; color: #666;">Wait</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="screenshot">
+            <div class="action-icon" style="background: #fce4ec; color: #c2185b;">📸</div>
+            <div>
+              <div style="font-weight: 600;">截图</div>
+              <div style="font-size: 12px; color: #666;">Screenshot</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="ocr">
+            <div class="action-icon" style="background: #e0f2f1; color: #00796b;">👁️</div>
+            <div>
+              <div style="font-weight: 600;">OCR识别</div>
+              <div style="font-size: 12px; color: #666;">OCR</div>
+            </div>
+          </div>
+
+          <div class="action-item" draggable="true" data-type="ai">
+            <div class="action-icon" style="background: #ede7f6; color: #512da8;">🤖</div>
+            <div>
+              <div style="font-weight: 600;">AI操作</div>
+              <div style="font-size: 12px; color: #666;">AI Action</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 中间：画布 -->
+      <div class="canvas">
+        <div class="toolbar">
+          <button class="btn btn-primary" onclick="playSequence()">
+            ▶️ 运行
+          </button>
+          <button class="btn btn-secondary" onclick="stopSequence()">
+            ⏹️ 停止
+          </button>
+          <button class="btn btn-success" onclick="saveSequence()">
+            💾 保存
+          </button>
+          <button class="btn btn-secondary" onclick="loadSequence()">
+            📂 加载
+          </button>
+          <button class="btn btn-danger" onclick="clearSequence()">
+            🗑️ 清空
+          </button>
+        </div>
+
+        <h3>操作序列</h3>
+        <div class="sequence-container" id="sequenceContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <div class="empty-state-text">暂无操作</div>
+            <div class="empty-state-hint">从左侧拖拽操作组件到这里</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：属性面板 -->
+      <div class="properties-panel">
+        <h3>⚙️ 属性</h3>
+        <div id="propertiesContent">
+          <div class="empty-state" style="padding: 40px 20px;">
+            <div class="empty-state-icon" style="font-size: 48px;">📝</div>
+            <div class="empty-state-text" style="font-size: 16px;">选择一个操作</div>
+            <div class="empty-state-hint">点击左侧操作查看属性</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-info">
+        <span>📊 操作数: <strong id="actionCount">0</strong></span>
+        <span>⏱️ 预计时长: <strong id="estimatedTime">0s</strong></span>
+        <span>💾 已保存: <strong id="savedStatus">否</strong></span>
+      </div>
+      <div style="font-size: 12px; color: #999;">
+        ClaudePulse v3.0.0 | 操作序列编辑器
+      </div>
+    </div>
+  </div>
+
+  <!-- 保存模态框 -->
+  <div class="modal" id="saveModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>💾 保存操作序列</h3>
+        <button class="close-btn" onclick="closeSaveModal()">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">序列名称</label>
+        <input type="text" class="form-input" id="sequenceName" placeholder="例如：自动登录流程">
+      </div>
+      <div class="form-group">
+        <label class="form-label">描述</label>
+        <textarea class="form-textarea" id="sequenceDescription" placeholder="描述这个操作序列的用途"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeSaveModal()">取消</button>
+        <button class="btn btn-primary" onclick="confirmSave()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 加载模态框 -->
+  <div class="modal" id="loadModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📂 加载操作序列</h3>
+        <button class="close-btn" onclick="closeLoadModal()">×</button>
+      </div>
+      <div id="sequenceList"></div>
+    </div>
+  </div>
+
+  <script src="editor.js"></script>
+</body>
+</html>

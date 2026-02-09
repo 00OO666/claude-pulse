@@ -44,6 +44,7 @@ class WebDashboard {
     // 监听端口
     this.server.listen(this.port, () => {
       this.core.log(`Dashboard running at http://localhost:${this.port}`, 'info');
+      this.core.log(`Dashboard V3 (Enhanced) available at http://localhost:${this.port}/v3/`, 'info');
     });
 
     // 监听核心事件，实时推送到客户端

@@ -2,11 +2,44 @@
 
 > Keep your finger on Claude's pulse
 
-ClaudePulse is a comprehensive monitoring and notification system for Claude Code CLI. It provides real-time activity tracking, error alerts, session management, remote control, work statistics, AI-powered insights, and system resource monitoring through multiple notification channels.
+**Version 3.0.0** - AI-Powered Automation Platform
+
+ClaudePulse is a comprehensive monitoring, automation, and AI-powered control system for Claude Code CLI. It provides real-time activity tracking, intelligent automation, remote control via Telegram, advanced analytics, and much more.
+
+## 🎉 What's New in v3.0.0
+
+### ⭐ Telegram Inline Keyboard
+- Interactive button interface (no more typing commands!)
+- Main menu + 5 functional pages
+- Dynamic button generation
+
+### 🤖 AI Smart Operations
+- OCR screen recognition (Tesseract + Windows OCR)
+- AI-powered screen understanding
+- Automatic form filling
+- Smart operation learning
+
+### 🎨 Visual Operation Editor
+- Drag-and-drop workflow designer
+- 7 operation components
+- Real-time preview and debugging
+- Save/load templates
+
+### 📊 Enhanced Analytics
+- Anomaly detection
+- Performance optimization suggestions
+- Trend prediction
+- Capacity planning
+
+### 🔔 Smart Notifications
+- AI learning user preferences
+- Do Not Disturb mode
+- More channels (WeChat Work, DingTalk, Feishu)
+- Achievement system
 
 ## ✨ Features
 
-### 🤖 AI-Powered Insights (v2.0)
+### 🤖 AI-Powered Insights (v3.0)
 - **Intelligent Session Summaries**: AI analyzes your work sessions and generates concise summaries
 - **Smart Error Prioritization**: Automatically categorizes errors by severity (CRITICAL/HIGH/MEDIUM/LOW)
 - **Context-Aware Analysis**: Understands your workflow and provides relevant insights

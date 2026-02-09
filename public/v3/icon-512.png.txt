@@ -1,0 +1,3 @@
+# 占位文件
+# 实际使用时需要替换为真实的 512x512 PNG 图标
+# 可以使用在线工具生成: https://realfavicongenerator.net/

@@ -1,0 +1,35 @@
+{
+  "name": "ClaudePulse Dashboard V3",
+  "short_name": "ClaudePulse",
+  "description": "Advanced monitoring dashboard for Claude Code sessions",
+  "start_url": "/v3/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/v3/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/v3/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open main dashboard",
+      "url": "/v3/",
+      "icons": []
+    }
+  ]
+}
